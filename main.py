@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, HTTPException, Form, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from fastapi.encoders import jsonable_encoder
 from sklearn.ensemble import RandomForestClassifier
@@ -12,6 +13,24 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 app = FastAPI(title="CCOA")
 
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost",
+    "http://localhost:3000",
+    "https://front-ccoa-ds4a.pages.dev/",
+    "https://ccoa.leandromoreno.com"
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -21,19 +40,22 @@ async def root():
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
+@app.post("/tmodel")
+async def tmodels(data: object = Form()):
+    return data
 
 @app.post("/model")
 async def models(
-        LCIIU: str = Form(),
-        desc_organizacion: str = Form(),
-        import_export: str = Form(),
-        ciudad: str = Form(),
-        activos: float = Form(),
-        pasivos: float = Form(),
-        ingresosoperacionales: float = Form(),
-        Sector: str = Form(),
-        Tamaño_empresa: str = Form(),
-        anio_creacion: int = Form(),
+        LCIIU: str,
+        desc_organizacion: str,
+        import_export: str,
+        ciudad: str,
+        activos: float,
+        pasivos: float,
+        ingresosoperacionales: float,
+        Sector: str,
+        Tamano_empresa: str,
+        anio_creacion: int,
 ):
     anos_totales = 2022 - anio_creacion
     existencia_meses = anos_totales * 12 + 1
@@ -50,7 +72,7 @@ async def models(
     new_data['pasivos'] = pasivos
     new_data['ingresosoperacionales'] = ingresosoperacionales
     new_data['Sector'] = Sector
-    new_data['Tamaño_empresa'] = Tamaño_empresa
+    new_data['Tamaño_empresa'] = Tamano_empresa
     new_data['existencia_meses'] = existencia_meses
     new_data['empresa_viva'] = 1
     new_data_X = pd.concat([df_yX.iloc[:, 1:], new_data])
