@@ -19,8 +19,10 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:3000",
-    "https://front-ccoa-ds4a.pages.dev/",
-    "https://ccoa.leandromoreno.com"
+    "https://front-ccoa-ds4a.pages.dev",
+    "https://ccoa.leandromoreno.com",
+    "http://front-ccoa-ds4a.pages.dev",
+    "http://ccoa.leandromoreno.com"
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -28,6 +30,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    max_age=3600,
 )
 
 
