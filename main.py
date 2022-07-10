@@ -14,16 +14,8 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 app = FastAPI(title="CCOA")
 
 
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:3000",
-    "https://front-ccoa-ds4a.pages.dev",
-    "https://ccoa.leandromoreno.com",
-    "http://front-ccoa-ds4a.pages.dev",
-    "http://ccoa.leandromoreno.com"
-]
+origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
