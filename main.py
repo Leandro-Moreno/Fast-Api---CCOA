@@ -39,7 +39,7 @@ async def say_hello(name: str):
 async def tmodels(data: object = Form()):
     return data
 
-@app.get("/model")
+@app.post("/model")
 async def models(
         LCIIU: str,
         desc_organizacion: str,
